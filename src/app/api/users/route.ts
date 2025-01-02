@@ -6,41 +6,21 @@ import { NextRequest } from "next/server";
 
 Connection();
 
-export async  function POST(request:NextRequest){
-try {
-    const db=await Connection("users")
-    const reqbody=await request.json()
-    const {name,email,number}=reqbody
-    console.log(name ,email,number)
-    if(!name || !email || !number){
-        return NextResponse.json({message:"all fields are must required"},{status:404})
-    }
-    const ifexits=await Usermodel.findOne({email})
-    if(ifexits){
-        return NextResponse.json({message:"this email is already created"},{status:400})
-    }
-    const ifnumber=await Usermodel.findOne({number})
-    if(ifnumber){
-        return NextResponse.json({message:"this number is already created"},{status:400})
-    }
 
-    const user=await Usermodel.create({
-        name,
-        email,
-        number
-    })
-  const saveduser=await user.save()
-  console.log(saveduser)
-
-    return NextResponse.json({
-        message:"user created sucesfully"
-        ,saveduser
-    },{status:200})
+export async function GET(request:NextRequest){
+    const {searchParams}=new URL(request.url)
+    const userId=searchParams.get("userId")
+   
     
-}catch (error) {
-    console.error('Error occurred:', error);
-    return NextResponse.json({ message: "Error occurred" }, { status: 400 });
-}
-
+  
+    const findid=await Usermodel.findById(userId)
+   
+    
+    
+    if(!findid){
+        return NextResponse.json({message:"user id not found"},{status:400})
+    }
+     return NextResponse.json({message:"user id ",findid},{status:200})
+    
 
 }

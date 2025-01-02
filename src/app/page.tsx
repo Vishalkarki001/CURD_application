@@ -1,10 +1,9 @@
 import React from 'react'
-import Home from './user/Home'
-
+import Profile from './profile/page'
 function page() {
   return (
     <>
-       <Home/>
+      <Profile/>
     </>
   )
 }
