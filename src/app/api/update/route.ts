@@ -13,17 +13,13 @@ export async function PUT(request:NextRequest){
         console.log(userId)
         const reqbody=await request.json()
         const {name,email,number}=reqbody
-    
+      
 
-       
-
-        const checkemail = await Usermodel.findOne({ email });
-        if (checkemail) {
-          return NextResponse.json({ message: "This email is already registered" }, { status: 400 });
-        }
+      
+     
         const updatedUser = await Usermodel.findByIdAndUpdate(
           userId,
-      
+    
             { name, email, number },
             { new: true } 
           );

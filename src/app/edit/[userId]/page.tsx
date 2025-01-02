@@ -22,7 +22,7 @@ const EditProfile = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  // Fetch user data on component mount
+  // Ffetch data bsed on userid
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,7 +59,8 @@ const EditProfile = () => {
     setError(null);
 
     try {
-      const response = await axios.put(`/api/update/users?userId=${userId}`, formData);
+      const response = await axios.put(`/api/update/?userId=${userId}`, formData);
+      console.log("updateid",userId)
       console.log("User updated successfully:", response.data);
       router.push(`/profile`);
     } catch (err) {

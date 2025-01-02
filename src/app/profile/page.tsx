@@ -1,5 +1,6 @@
 "use client";
 
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -31,11 +32,12 @@ const Profile = () => {
     return <p>Loading..</p>;
   }
 
-  const handleDelete = async (deleteid: string) => {
+  const handleDelete = async (userId: string) => {
+    console.log("fronted UsserId",userId)
     try {
-      await axios.delete(`/api/delete/${deleteid}`);
-      setData((prevData) => prevData.filter((user: any) => user._id !== deleteid));
-      setFilteredData((prevData) => prevData.filter((user: any) => user._id !== deleteid));
+      await axios.delete(`/api/delete/?userId=${userId}`);
+      setData((prevData:string[]) => prevData.filter((user: any) => user._id !== userId));
+      setFilteredData((prevData) => prevData.filter((user: any) => user._id !== userId));
       router.push("/profile");
     } catch (error) {
       console.log("Error deleting user:", error);
@@ -80,7 +82,7 @@ const Profile = () => {
             <thead>
               <tr className="border-b">
                 <th className="py-2 px-4 text-left font-semibold text-gray-700 text-sm sm:text-base">
-                  S. No
+                  S.No
                 </th>
                 <th className="py-2 px-4 text-left font-semibold text-gray-700 text-sm sm:text-base">
                   Name
@@ -115,7 +117,7 @@ const Profile = () => {
                     <td className="py-2 px-4 text-gray-700 text-sm sm:text-base">{user.number}</td>
                     <td className="py-2 px-4 flex flex-col sm:flex-row gap-2">
                       <Link
-                        href={`/edit/${user.id}`}
+                        href={`/edit/${user._id}`}
                         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                       >
                       <MdModeEdit />

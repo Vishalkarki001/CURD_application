@@ -5,12 +5,13 @@ import { NextRequest } from "next/server";
 
 
 Connection();
-export async function DELETE(request:NextRequest,{params}:{params:{deleteid:string}}){
-    try {
-        const {deleteid}=params;
-        console.log("user id of baceknd is ",deleteid)
-        
-        const deleteuser=await Usermodel.findByIdAndDelete(deleteid);
+export async function DELETE(request:NextRequest){
+    try{
+        const {searchParams}=new URL(request.url)
+        const userId=searchParams.get("userId")
+
+        console.log("backend deleteid",userId)
+        const deleteuser=await Usermodel.findByIdAndDelete(userId);
         if(!deleteuser){
             return NextResponse.json({message:"user not delete sucesfully"},{status:400})
         }

@@ -60,7 +60,7 @@ function Home() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
       <h1 className="text-2xl font-bold text-center mb-6">User Registration</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
