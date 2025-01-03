@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 const EditProfile = () => {
     const params = useParams(); 
@@ -14,7 +15,6 @@ const EditProfile = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     number: "",
   });
 
@@ -31,7 +31,6 @@ const EditProfile = () => {
         
         setFormData({
           name: response.data.findid.name || "",
-          email: response.data.findid.email || "",
           number: response.data.findid.number || "",
         });
         setLoading(false);
@@ -58,11 +57,7 @@ const EditProfile = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setValidation("Please enter a valid email address.");
-      return;
-    }
+  
 
     if (!/^\d{10}$/.test(formData.number)) {
       setValidation("Phone number must be exactly 10 digits.");
@@ -72,7 +67,8 @@ const EditProfile = () => {
     try {
       const response = await axios.put(`/api/update/?userId=${userId}`, formData);
     
-      // console.log("User updated successfully:", response.data);
+      console.log("User updated successfully:", response.data);
+      
       router.push(`/profile`);
     } catch (err) {
       console.error("Error updating user:", err);
@@ -106,19 +102,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div>
-            <label htmlFor = "email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type = "email"
-              id = "email"
-              name = "email"
-              value = {formData.email}
-              onChange = {handleChange}
-              className = "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+       
 
           <div>
             <label htmlFor = "number" className="block text-sm font-medium text-gray-700">
@@ -128,19 +112,26 @@ const EditProfile = () => {
               type="text"
               id="number"
               name="number"
+              
               value = {formData.number}
               onChange = {handleChange}
-              className = "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className = " mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
             <button
               type = "submit"
-              className = "w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className = " mb-4 px-8 block text-center  py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Update
             </button>
+            <Link
+              href ={`/email/${userId}`}
+              className = "mt-4 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Update Email
+            </Link>
             <p className="mt-4 text-red-500 text-xl">{validation}</p>
         
           </div>

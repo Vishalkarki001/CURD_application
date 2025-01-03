@@ -13,7 +13,7 @@ export async function GET(request:NextRequest){
    
     
   
-    const findid=await Usermodel.findById(userId)
+    const findid = await Usermodel.findById(userId)
    
     
     
