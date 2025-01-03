@@ -8,6 +8,7 @@ Connection();
 
 export async function PUT(request:NextRequest){
        try{
+       
         const {searchParams}=new URL(request.url)
         const userId=searchParams.get("userId")
         console.log(userId)
@@ -15,7 +16,7 @@ export async function PUT(request:NextRequest){
         const {name,email,number}=reqbody
       
 
-      
+     
      
         const updatedUser = await Usermodel.findByIdAndUpdate(
           userId,
@@ -23,6 +24,8 @@ export async function PUT(request:NextRequest){
             { name, email, number },
             { new: true } 
           );
+     
+          
           if(updatedUser){
             return NextResponse.json({message:"this is the updated user"},{status:200})
           }

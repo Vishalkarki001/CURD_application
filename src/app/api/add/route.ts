@@ -12,31 +12,31 @@ Connection();
 export async  function POST(request:NextRequest){
 try {
  
-    const reqbody=await request.json()
+    const reqbody = await request.json()
     const {name,email,number}=reqbody
     console.log(name ,email,number)
     if(!name || !email || !number){
         return NextResponse.json({message:"all fields are must required"},{status:404})
     }
-    const ifexits=await Usermodel.findOne({email})
+    const ifexits = await Usermodel.findOne({email})
     if(ifexits){
         return NextResponse.json({
             error:"this email is already created"
         },{status:400})
     }
-    const ifnumber=await Usermodel.findOne({number})
+    const ifnumber = await Usermodel.findOne({number})
     if(ifnumber){
         return NextResponse.json({
             error:"this number is already created"
         },{status:400})
     }
 
-    const user=await Usermodel.create({
+    const user = await Usermodel.create({
         name,
         email,
         number
     })
-  const saveduser=await user.save()
+  const saveduser = await user.save()
  
 
     return NextResponse.json({

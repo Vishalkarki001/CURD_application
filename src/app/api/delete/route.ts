@@ -7,15 +7,15 @@ import { NextRequest } from "next/server";
 Connection();
 export async function DELETE(request:NextRequest){
     try{
-        const {searchParams}=new URL(request.url)
-        const userId=searchParams.get("userId")
+        const {searchParams} = new URL(request.url)
+        const userId = searchParams.get("userId")
 
-        console.log("backend deleteid",userId)
-        const deleteuser=await Usermodel.findByIdAndDelete(userId);
+     
+        const deleteuser = await Usermodel.findByIdAndDelete(userId);
         if(!deleteuser){
-            return NextResponse.json({message:"user not delete sucesfully"},{status:400})
+            return NextResponse.json({message:"user not delete sucessfully"},{status:400})
         }
-     return NextResponse.json({message:"the user is delete sucesfuuly"},
+     return NextResponse.json({message:"the user is delete sucessfully"},
         {status:200}
      )
 

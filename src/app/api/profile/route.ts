@@ -10,7 +10,7 @@ export  async function GET(request:NextRequest){
 
 try{
     
-    const users=await Usermodel.find({})
+    const users = await Usermodel.find({})
     return NextResponse.json({message:"all the user are find",users:users},{status:200})
     
 

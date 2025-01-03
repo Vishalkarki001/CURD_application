@@ -6,6 +6,7 @@ import axios from "axios";
 function Home() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [validation, setValidation]=useState<string |null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,12 +28,12 @@ function Home() {
     // Validation logic
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address.");
+      setValidation("Please enter a valid email address.");
       return;
     }
 
     if (!/^\d{10}$/.test(formData.number)) {
-      alert("Phone number must be exactly 10 digits.");
+      setValidation("Phone number must be exactly 10 digits.");
       return;
     }
 
@@ -41,15 +42,16 @@ function Home() {
       return;
     }
 
-    console.log("This is form data:", formData);
+    // console.log("This is form data:", formData);
 
     try {
-      const response = await axios.post("/api/add", formData);
-      setError(null);
-      console.log("Raw Response:", response.data);
-      router.push("/profile");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
+         const response = await axios.post("/api/add", formData);
+         setError(null);
+         console.log("Raw Response:", response.data);
+       router.push("/profile");
+    }  catch (error) {
+
+       if (axios.isAxiosError(error)) {
         const backendData = error.response?.data;
         setError(JSON.stringify(backendData) || "An unexpected error occurred");
         console.log(error);
@@ -112,6 +114,7 @@ function Home() {
           >
             Create
           </button>
+          <p className="text-xl text-red-500 mt-4">{validation}</p>
         </div>
       </form>
 

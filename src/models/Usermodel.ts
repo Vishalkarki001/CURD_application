@@ -16,7 +16,12 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please provide the number"],
     unique: true,
   },
-});
+
+},
+{
+  timestamps:true
+},
+);
 
 
 const Usermodel = mongoose.models.User || mongoose.model("User", userSchema);
