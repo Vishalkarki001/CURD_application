@@ -8,12 +8,19 @@ import { useRouter } from "next/navigation";
 import { MdModeEdit } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { RiDeleteBack2Fill } from "react-icons/ri";
-
+import { useSearchParams } from "next/navigation";
+import { GrLinkNext } from "react-icons/gr";
+import { GrLinkPrevious } from "react-icons/gr";
 const Profile = () => {
   const router = useRouter();
   const [data, setData] = useState<any>([]);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  
+  const searchParams=useSearchParams()
+  const page=Number(searchParams.get("page")?? "1")
+  const perPage=Number(searchParams.get("per_page")??"3")
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +34,16 @@ const Profile = () => {
     };
     fetchData();
   }, []);
+ 
 
-  if (!data) {
-    return <p>Loading..</p>;
-  }
+  useEffect(()=>{
+    const start=(page-1)*perPage
+    const end=start+perPage;
+    setFilteredData(data.slice(start,end));
+
+  },[data,page,perPage])
+  
+  
 
   const handleDelete = async (userId: string) => {
     console.log("fronted UsserId",userId)
@@ -52,7 +65,10 @@ const Profile = () => {
     );
     setFilteredData(filtered);
   };
+const handlepagination=(newPage)=>{
+  router.push(`?page=${newPage}&perPage=${perPage}`);
 
+}
   return (
     <>
       <div className = "w-full min-h-screen bg-gray-100 p-4 sm:p-8">
@@ -124,6 +140,7 @@ const Profile = () => {
                       </Link>
                       <button
                         onClick={() => handleDelete(user._id)}
+                     
                         className = "bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm sm:text-base"
                       >
                      <RiDeleteBack2Fill />
@@ -136,15 +153,35 @@ const Profile = () => {
             </tbody>
           </table>
         </div>
+        <div className="flex justify-center items-center gap-6 mt-6">
+        <button  className="p-2 border-2 bg-blue-600 rounded-lg px-9 font-semibold text-white disabled:bg-gray-500 "
+        onClick={()=>handlepagination(page-1)}
+        disabled={page <= 1}
+        >
+        <GrLinkPrevious />
+        
+        </button>
+        <p className="text-md font-semibold">Page no {page}</p>
+        <button className="p-2 border-2 bg-blue-600 rounded-lg px-9 text-white font-semibold disabled:bg-gray-500"
+         onClick={()=>handlepagination(page+1)} 
+         disabled={filteredData.length < page}
+         >
+        <GrLinkNext />
+        </button>
+        <p className="text-md font-semibold disabled:bg-gray-500">Total User {filteredData.length}</p>
+        
+        </div>
 
         <div className = "flex justify-center items-center mt-6">
+          
           <Link
-            className = "bg-orange-400 text-white text-sm sm:text-xl font-semibold justify-center ml-0 sm:ml-10 p-3 sm:p-4 rounded-lg"
+            className = "bg-orange-400 text-white text-sm sm:text-xl font-semibold justify-center px-9 ml-0 sm:ml-10 p-3 sm:p-4 rounded-lg"
             href = "/add"
           >
             Add User
           </Link>
         </div>
+      
       </div>
     </>
   );
