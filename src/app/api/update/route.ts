@@ -8,7 +8,7 @@ Connection();
 
 export async function PUT(request:NextRequest){
        try{
-       
+
         const {searchParams}=new URL(request.url)
         const userId=searchParams.get("userId")
         console.log(userId)
